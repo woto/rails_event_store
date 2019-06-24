@@ -219,5 +219,12 @@ module RubyEventStore
     let(:test_change) { false }
 
     it_behaves_like :event_repository, InstrumentedRepository
+
+    specify "#inspect" do
+      in_memory_repository = InMemoryRepository.new
+      instrumented_repository = InstrumentedRepository.new(in_memory_repository, ActiveSupport::Notifications)
+      instrumented_repository_id = instrumented_repository.object_id.to_s(16)
+      expect(instrumented_repository.inspect).to eq("#<RubyEventStore::InstrumentedRepository:0x#{instrumented_repository_id} inner_repository=#{in_memory_repository.inspect}>")
+    end
   end
 end

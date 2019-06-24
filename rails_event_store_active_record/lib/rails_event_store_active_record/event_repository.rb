@@ -66,6 +66,10 @@ module RailsEventStoreActiveRecord
         .map{|name| RubyEventStore::Stream.new(name)}
     end
 
+    def inspect
+      "#<#{self.class}:0x#{__id__.to_s(16)}>"
+    end
+
     private
 
     def add_to_stream(collection, stream, expected_version, include_global, &to_event_id)

@@ -135,6 +135,11 @@ module RubyEventStore::ROM
       expect(repository.read(specification.limit(2).result).to_a).to eq([event])
     end
 
+    specify "#inspect" do
+      object_id = repository.object_id.to_s(16)
+      expect(repository.inspect).to eq("#<RubyEventStore::ROM::EventRepository:0x#{object_id}>")
+    end
+
     def cleanup_concurrency_test
       rom_helper.close_pool_connection
     end
