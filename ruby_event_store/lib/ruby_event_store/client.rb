@@ -274,6 +274,7 @@ module RubyEventStore
       <<~EOS.strip
         #<#{self.class}:0x#{__id__.to_s(16)}>
           - repository: #{repository.inspect}
+          - dispatcher: #{broker.dispatcher.inspect}
       EOS
     end
 
