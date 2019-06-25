@@ -34,6 +34,12 @@ module RubyEventStore
           expect(result).to eq(item)
           expect(result[:metadata].keys.map(&:class).uniq).to eq([Symbol])
         end
+
+        specify "#inspect" do
+          transformation = SymbolizeMetadataKeys.new
+          object_id = transformation.object_id.to_s(16)
+          expect(transformation.inspect).to eq("#<RubyEventStore::Mappers::Transformation::SymbolizeMetadataKeys:0x#{object_id}>")
+        end
       end
     end
   end

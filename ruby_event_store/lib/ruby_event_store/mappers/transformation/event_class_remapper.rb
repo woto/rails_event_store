@@ -16,6 +16,10 @@ module RubyEventStore
           item.merge(event_type: class_map[item.fetch(:event_type)] || item.fetch(:event_type))
         end
 
+        def inspect
+          "#<#{self.class}:0x#{__id__.to_s(16)}>"
+        end
+
         private
         attr_reader :class_map
       end

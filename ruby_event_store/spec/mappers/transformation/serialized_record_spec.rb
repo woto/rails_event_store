@@ -27,6 +27,12 @@ module RubyEventStore
         specify "#load" do
           expect(SerializedRecord.new.load(record)).to eq(item)
         end
+
+        specify "#inspect" do
+          transformation = SerializedRecord.new
+          object_id = transformation.object_id.to_s(16)
+          expect(transformation.inspect).to eq("#<RubyEventStore::Mappers::Transformation::SerializedRecord:0x#{object_id}>")
+        end
       end
     end
   end

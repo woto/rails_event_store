@@ -36,6 +36,12 @@ module RubyEventStore
         specify "#load" do
           expect(Serialization.new.load(serialized)).to eq(item)
         end
+
+        specify "#inspect" do
+          transformation = Serialization.new
+          object_id = transformation.object_id.to_s(16)
+          expect(transformation.inspect).to eq("#<RubyEventStore::Mappers::Transformation::Serialization:0x#{object_id} serializer=Psych>")
+        end
       end
     end
   end

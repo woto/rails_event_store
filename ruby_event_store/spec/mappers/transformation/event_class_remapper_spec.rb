@@ -26,6 +26,12 @@ module RubyEventStore
           expect(EventClassRemapper.new(class_map).load(item)).to eq(item)
           expect(EventClassRemapper.new(class_map).load(changeable_item)).to eq(changed_item)
         end
+
+        specify "#inspect" do
+          transformation = EventClassRemapper.new(class_map)
+          object_id = transformation.object_id.to_s(16)
+          expect(transformation.inspect).to eq("#<RubyEventStore::Mappers::Transformation::EventClassRemapper:0x#{object_id}>")
+        end
       end
     end
   end

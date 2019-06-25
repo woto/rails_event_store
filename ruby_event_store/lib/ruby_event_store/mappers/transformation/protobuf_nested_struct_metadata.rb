@@ -20,6 +20,10 @@ module RubyEventStore
           symbolize.load(item.merge(metadata: metadata))
         end
 
+        def inspect
+          "#<#{self.class}:0x#{__id__.to_s(16)}>"
+        end
+
         def require_optional_dependency
           require 'protobuf_nested_struct'
         rescue LoadError

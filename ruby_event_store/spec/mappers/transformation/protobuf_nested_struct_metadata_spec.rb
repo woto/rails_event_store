@@ -45,6 +45,12 @@ module RubyEventStore
           load = ProtobufNestedStructMetadata.new.load(dump)
           expect(load).to eq(item)
         end
+
+        specify "#inspect" do
+          transformation = ProtobufNestedStructMetadata.new
+          object_id = transformation.object_id.to_s(16)
+          expect(transformation.inspect).to eq("#<RubyEventStore::Mappers::Transformation::ProtobufNestedStructMetadata:0x#{object_id}>")
+        end
       end
     end
   end

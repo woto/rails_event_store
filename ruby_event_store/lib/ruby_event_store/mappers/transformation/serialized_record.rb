@@ -21,6 +21,10 @@ module RubyEventStore
             event_type: serialized_record.event_type
           )
         end
+
+        def inspect
+          "#<#{self.class}:0x#{__id__.to_s(16)}>"
+        end
       end
     end
   end

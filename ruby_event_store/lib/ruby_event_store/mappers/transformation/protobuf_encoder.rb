@@ -12,6 +12,10 @@ module RubyEventStore
           item.merge(data: load_data(item.event_type, item.data))
         end
 
+        def inspect
+          "#<#{self.class}:0x#{__id__.to_s(16)}>"
+        end
+
         private
         def encode_data(data)
           begin

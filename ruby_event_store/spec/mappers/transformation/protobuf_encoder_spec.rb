@@ -70,6 +70,12 @@ module RubyEventStore
           expect(result.event_id).to       eq(domain_event.event_id)
           expect(result.data).to           eq(data)
         end
+
+        specify "#inspect" do
+          transformation = ProtobufEncoder.new
+          object_id = transformation.object_id.to_s(16)
+          expect(transformation.inspect).to eq("#<RubyEventStore::Mappers::Transformation::ProtobufEncoder:0x#{object_id}>")
+        end
       end
     end
   end

@@ -29,6 +29,12 @@ module RubyEventStore
           expect(loaded.data).to be_a(ResTesting::OrderCreated)
           expect(loaded.metadata.to_h).to eq(event.metadata.to_h)
         end
+
+        specify "#inspect" do
+          transformation = ProtoEvent.new
+          object_id = transformation.object_id.to_s(16)
+          expect(transformation.inspect).to eq("#<RubyEventStore::Mappers::Transformation::ProtoEvent:0x#{object_id}>")
+        end
       end
     end
   end
