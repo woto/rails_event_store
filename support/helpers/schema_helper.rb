@@ -40,23 +40,10 @@ module SchemaHelper
     schema.read
   end
 
-  def build_schema(gemfile, template_name: nil)
-    run_in_subprocess(<<~EOF, gemfile: gemfile)
-      require 'rails/generators'
-      require 'rails_event_store_active_record'
-      require 'ruby_event_store'
-      require 'logger'
-      require '../support/helpers/migrator'
-
-      $verbose = ENV.has_key?('VERBOSE') ? true : false
-      ActiveRecord::Schema.verbose = $verbose
-      ActiveRecord::Base.logger    = Logger.new(STDOUT) if $verbose
-      ActiveRecord::Base.establish_connection(ENV['DATABASE_URL'])
-
-      gem_path = $LOAD_PATH.find { |path| path.match(/rails_event_store_active_record/) }
-      Migrator.new(File.expand_path('rails_event_store_active_record/generators/templates', gem_path))
-        .run_migration('create_event_store_events', #{template_name ? "'#{template_name}'" : "nil"})
-    EOF
+  def load_schema(name)
+    File
+      .readlines(File.join(__dir__, "../schema/#{name}.sql"))
+      .each { |line| ActiveRecord::Base.connection.execute(line) }
   end
 
   def run_code(code, gemfile:)
@@ -74,17 +61,14 @@ module SchemaHelper
     EOF
   end
 
-  def validate_migration(source_gemfile, target_gemfile,
-                         source_template_name: nil)
+  def validate_migration(source_schema, target_schema)
     begin
-      build_schema(source_gemfile, template_name: source_template_name)
       establish_database_connection
+      load_schema(source_schema)
       yield
       actual_schema = dump_schema
       drop_database
-      close_database_connection
-      build_schema(target_gemfile)
-      establish_database_connection
+      load_schema(target_schema)
       expect(actual_schema).to eq(dump_schema)
     ensure
       drop_database

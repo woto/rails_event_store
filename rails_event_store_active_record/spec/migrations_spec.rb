@@ -5,8 +5,7 @@ RSpec.describe "database schema migrations" do
   include SchemaHelper
 
   specify "migrate from v0.33.0 to v0.34.0" do
-    validate_migration('Gemfile.0_33_0', 'Gemfile.0_34_0',
-                       source_template_name: 'migration') do
+    validate_migration('0_33_0', '0_34_0') do
       run_migration('index_by_event_type')
       run_migration('limit_for_event_id')
     end
@@ -14,8 +13,7 @@ RSpec.describe "database schema migrations" do
 
 
   specify "migrate from v0.34.0 to v0.35.0" do
-    validate_migration('Gemfile.0_34_0', 'Gemfile.0_35_0',
-      source_template_name: 'create_event_store_events') do
+    validate_migration('0_34_0', '0_35_0') do
       run_code(<<~EOF, gemfile: 'Gemfile.0_34_0')
         DummyEvent = Class.new(RubyEventStore::Event)
 
