@@ -38,9 +38,15 @@ module RubyEventStore
         end
 
         specify "#inspect" do
-          transformation = Serialization.new
+          some_serializer_klass = Class.new do
+            def inspect
+              "SomeInspect"
+            end
+          end
+          some_serializer_instance = some_serializer_klass.new
+          transformation = Serialization.new(serializer: some_serializer_instance)
           object_id = transformation.object_id.to_s(16)
-          expect(transformation.inspect).to eq("#<RubyEventStore::Mappers::Transformation::Serialization:0x#{object_id} serializer=Psych>")
+          expect(transformation.inspect).to eq("#<RubyEventStore::Mappers::Transformation::Serialization:0x#{object_id} serializer=SomeInspect>")
         end
       end
     end
