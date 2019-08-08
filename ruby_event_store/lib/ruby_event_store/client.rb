@@ -24,10 +24,11 @@ module RubyEventStore
     # @param stream_name [String] name of the stream for persisting events.
     # @param expected_version [:any, :auto, :none, Integer] controls optimistic locking strategy. {http://railseventstore.org/docs/expected_version/ Read more}
     # @return [self]
-    def publish(events, stream_name: GLOBAL_STREAM, expected_version: :any)
+    def publish(events, stream_name: GLOBAL_STREAM, expected_version: :any, after_store_callback: nil)
       enriched_events = enrich_events_metadata(events)
       serialized_events = serialize_events(enriched_events)
       append_to_stream_serialized_events(serialized_events, stream_name: stream_name, expected_version: expected_version)
+      after_store_callback.call if after_store_callback
       enriched_events.zip(serialized_events) do |event, serialized_event|
         with_metadata(
           correlation_id: event.metadata[:correlation_id] || event.event_id,
