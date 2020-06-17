@@ -11,10 +11,10 @@ module RailsEventStoreActiveRecord
       @repo_reader = EventRepositoryReader.new
     end
 
-    def append_to_stream(events, stream, expected_version)
-      add_to_stream(Array(events), stream, expected_version, true) do |event|
-        build_event_record(event).save!
-        event.event_id
+    def append_to_stream(serialized_records, stream, expected_version)
+      add_to_stream(Array(serialized_records), stream, expected_version, true) do |serialized_record|
+        build_event_record(serialized_record).save!
+        serialized_record.event_id
       end
     end
 
