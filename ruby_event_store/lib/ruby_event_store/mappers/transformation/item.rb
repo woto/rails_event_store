@@ -32,6 +32,14 @@ module RubyEventStore
           fetch(:event_type)
         end
 
+        def serialized_metadata
+          fetch(:serialized_metadata)
+        end
+
+        def serialized_data
+          fetch(:serialized_data)
+        end
+
         def ==(other_event)
           other_event.instance_of?(self.class) &&
             other_event.to_h.eql?(to_h)
